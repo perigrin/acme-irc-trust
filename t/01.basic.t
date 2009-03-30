@@ -37,15 +37,28 @@ ok(
           sartak!sartak@127.0.0.1
           nothingmuch!nothingmuch@127.0.0.1
           )
-      ) 'we trust perigrin & stevan in #moose'
+    ),
+    'we trust perigrin & stevan in #moose'
 );
 
 is( $trust->{perigrin}, 'o', 'perigrin has ops' );
 is( $trust->{stevan},   'o', 'stevan has ops' );
+ok(
+    $trust = $t->get_modes(
+        '#moose' => qw(
+          mst!~mst@127.0.0.1
+          perigrin!~perigrin@127.0.0.1
+          stevan!~stevan@127.0.0.1
+          mekano-pip!pip@127.0.0.1
+          sartak!sartak@127.0.0.1
+          nothingmuch!nothingmuch@127.0.0.1
+          )
+    ),
+    'got a full trust line'
+);
 
-ok( $trust = $t->get_ops(), 'got a full trust line' );
 cmp_deeply(
     $trust,
-    [ [ 'ooooo mst perigrin stevan sartak', 'ov nothingmuch mekano-pip' ], ],
+    [ '+ooovo mst perigrin stevan mekano-pip sartak', '+o nothingmuch' ],
     'we trust people properly'
-  )
+);
