@@ -10,6 +10,12 @@ has _trust => (
 
 sub _build__trust { {} }
 
+has op_list_size => (
+    isa     => 'Int',
+    is      => 'ro',
+    default => 5,
+);
+
 sub is_op {
     my ($trust) = @_;
     return 1 if $trust >= 1;
@@ -61,12 +67,11 @@ sub get_modes {
 
     my $modes = $self->check( $channel, @users );
     return unless $modes;
-    use Data::Dump::Streamer;
+    my $limit = $self->op_list_size - 1;
     my @output;
-
     while (@users) {
         my ( $start, $end ) = ( '+', '' );
-        for ( 0 .. 4 ) {
+        for ( 0 .. $limit ) {
             last unless @users;
             my $nick = parse_user( shift @users );
             next unless exists $modes->{$nick};
